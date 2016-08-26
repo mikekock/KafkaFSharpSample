@@ -17,7 +17,6 @@ let sendToTopicWithKey (topic:Topic) (message:byte[], key:byte[]) =
 let createKafkaTopic serverName bufferingMS topicName : Topic = 
     let c = new Config()
     c.["queue.buffering.max.ms"] <- bufferingMS;
-    let tc = new TopicConfig()
     let producer = new Producer(serverName)
     let topic = producer.Topic(topicName)
     topic
@@ -28,16 +27,18 @@ let kafkaTopic topicName : Topic =
 [<EntryPoint>]
 let main argv = 
     let iterations = System.Int32.Parse argv.[0]
-    let topic = kafkaTopic("test")
+    use topic = kafkaTopic("test")
     let sendToTestTopic = sendToTopic topic
     let rnd = System.Random()
 
     for i in 1 .. iterations do
 
         let randomNumber = rnd.Next 9
-        let msg = stringToUTF8Bytes (sprintf "%d" i)
-        let key = stringToUTF8Bytes (sprintf "%d" i)
+        let s = sprintf "Hello #%d" i
+        let msg = stringToUTF8Bytes s
+        let key = stringToUTF8Bytes s
  
+        //msg |> topic.Produce |> ignore
         sendToTestTopic msg |> ignore
         printfn "%d = %d" i randomNumber
 
@@ -58,5 +59,6 @@ let main argv =
     //                                            Encoding.UTF8.GetBytes(e)
     //                                            |> topic.Produce |> ignore
     let unused = Console.ReadLine()
+    printfn "%s" topic.Name
     0 // return an integer exit code
 

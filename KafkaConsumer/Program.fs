@@ -57,7 +57,7 @@ let kafkaConsumer group server topic pipeline =
         Encoding.UTF8.GetString(msg.Payload, 0, msg.Payload.Length)
     let pipe msg = decodeKafkaMessageToString msg |> pipeline |> ignore
     
-    consumer.OnMessage.Add(fun msg -> pipe |> ignore)  
+    consumer.OnMessage.Add(fun msg -> msg |> pipe |> ignore)  //printfn "%s" "Yo! I got something!") //msg |> pipe |> ignore)  
     let topics = new List<string>()
     topics.Add topic
     consumer.Subscribe topics
@@ -84,11 +84,12 @@ let main argv =
 
     let pipeline message = standardSomeOrNonePipeline decode handle interpret message
 
-    let consumer = kafkaConsumer consumerGroup "www.smokinserver.com:9092" "test" pipeline
+    use consumer = kafkaConsumer consumerGroup "www.smokinserver.com:9092" "test" pipeline
 
     printfn "Started consumer, press enter to stop consuming" 
-
-
+    
     let unused = Console.ReadLine()
+
+    printfn "%s" consumer.Name
     0 // return an integer exit code
 
