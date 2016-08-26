@@ -28,19 +28,19 @@ let kafkaTopic topicName : Topic =
 let main argv = 
     let iterations = System.Int32.Parse argv.[0]
     use topic = kafkaTopic("test")
-    let sendToTestTopic = sendToTopic topic
+    let sendToTestTopic = sendToTopicWithKey topic
     let rnd = System.Random()
 
     for i in 1 .. iterations do
-
         let randomNumber = rnd.Next 9
-        let s = sprintf "Hello #%d" i
-        let msg = stringToUTF8Bytes s
-        let key = stringToUTF8Bytes s
+        let sMsg = sprintf "Hello #%d from %d" randomNumber i
+        let sKey = sprintf "%d" randomNumber
+
+        let msg = stringToUTF8Bytes sMsg
+        let key = stringToUTF8Bytes sKey
  
-        //msg |> topic.Produce |> ignore
-        sendToTestTopic msg |> ignore
-        printfn "%d = %d" i randomNumber
+        (msg, key) |> sendToTestTopic |> ignore
+        printfn "%s" sMsg
 
     
     //let c = new Config()
