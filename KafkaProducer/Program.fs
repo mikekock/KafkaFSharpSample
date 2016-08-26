@@ -27,7 +27,7 @@ let kafkaTopic topicName : Topic =
 [<EntryPoint>]
 let main argv = 
     let iterations = System.Int32.Parse argv.[0]
-    use topic = kafkaTopic("test")
+    let topic = kafkaTopic("test")
     let sendToTestTopic = sendToTopicWithKey topic
     let rnd = System.Random()
 

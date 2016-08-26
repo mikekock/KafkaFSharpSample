@@ -25,8 +25,6 @@ type Output =
     | Result of string
 
 let handle input =
-    //let r = sprintf "Output %s" input.Val
-    //Some(Output.Result(r))
     match input with
         | Val v ->  Some(Output.Result (sprintf "Output %s" v))
             
@@ -57,7 +55,7 @@ let kafkaConsumer group server topic pipeline =
         Encoding.UTF8.GetString(msg.Payload, 0, msg.Payload.Length)
     let pipe msg = decodeKafkaMessageToString msg |> pipeline |> ignore
     
-    consumer.OnMessage.Add(fun msg -> msg |> pipe |> ignore)  //printfn "%s" "Yo! I got something!") //msg |> pipe |> ignore)  
+    consumer.OnMessage.Add(fun msg -> msg |> pipe |> ignore) 
     let topics = new List<string>()
     topics.Add topic
     consumer.Subscribe topics
@@ -75,16 +73,11 @@ let standardSomeOrNonePipeline decodeInput handleInput interpretOutput message =
 
 [<EntryPoint>]
 let main argv = 
-    //printfn "%A" argv
     let consumerGroup = argv.[0]
-
-
-   
-
 
     let pipeline message = standardSomeOrNonePipeline decode handle interpret message
 
-    use consumer = kafkaConsumer consumerGroup "www.smokinserver.com:9092" "test" pipeline
+    let consumer = kafkaConsumer consumerGroup "www.smokinserver.com:9092" "test" pipeline
 
     printfn "Started consumer, press enter to stop consuming" 
     
