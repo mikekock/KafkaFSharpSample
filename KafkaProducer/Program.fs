@@ -1,5 +1,7 @@
-﻿open System
+﻿module MainKafkaProducer
+open System
 open System.Text
+open KafkaUtil
 open RdKafka
 
 let stringToUTF8Bytes (s:string) =
@@ -12,15 +14,19 @@ let sendToTopic (topic:Topic) (message:byte[]) =
 let sendToTopicWithKey (topic:Topic) (message:byte[], key:byte[]) =
      topic.Produce (message, key)
 
-let createKafkaTopic serverName bufferingMS topicName : Topic = 
+let createKafkaProducer serverName bufferingMS = 
     let c = new Config()
     c.["queue.buffering.max.ms"] <- bufferingMS;
-    let producer = new Producer(serverName)
+    let producer = new Producer(c, serverName) 
+    producer
+
+let createKafkaTopic (producer:Producer) (topicName:string) = 
     let topic = producer.Topic(topicName)
     topic
 
-let kafkaTopic topicName : Topic = 
-    createKafkaTopic "www.smokinserver.com:9092" "10" topicName
+
+let kafkaTopic (producer:Producer) (topicName:string) = 
+    createKafkaTopic producer topicName
 
 let makeKafkaMessage value iteration =
     let sMsg = sprintf "Hello #%d from %d" value iteration
@@ -33,15 +39,18 @@ let makeKafkaMessage value iteration =
 [<EntryPoint>]
 let main argv = 
     let iterations = System.Int32.Parse argv.[0]
-    use topic = kafkaTopic("test")
+    use producer = createKafkaProducer "www.smokinserver.com:9092" "20"
+    use topic = kafkaTopic producer "test"
     let sendToTestTopic = sendToTopicWithKey topic
+    let publishMessage value iteration = (sendToTestTopic (makeKafkaMessage value iteration))
     let rnd = System.Random()
 
     for i in 1 .. iterations do
         let randomNumber = rnd.Next 9
-        let msg = makeKafkaMessage randomNumber i
+        //let msg = makeKafkaMessage randomNumber i
  
-        msg |> sendToTestTopic |> ignore
+        publishMessage randomNumber i |> ignore
+        //msg |> sendToTestTopic |> ignore
 
     
     //let c = new Config()
@@ -59,7 +68,8 @@ let main argv =
     //                                            printfn "Sending to Kafka -> %s" e
     //                                            Encoding.UTF8.GetBytes(e)
     //                                            |> topic.Produce |> ignore
-    let unused = Console.ReadLine()
-    printfn "%s" topic.Name
+    //let unused = Console.ReadLine()
+    //printfn "%s" topic.Name
+
     0 // return an integer exit code
 
