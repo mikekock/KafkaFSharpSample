@@ -23,7 +23,3 @@ let createKafkaProducer serverName bufferingMS =
 let createKafkaTopic (producer:Producer) (topicName:string) = 
     let topic = producer.Topic(topicName)
     topic
-
-
-let kafkaTopic (producer:Producer) (topicName:string) = 
-    createKafkaTopic producer topicName
