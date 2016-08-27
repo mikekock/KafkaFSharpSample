@@ -39,7 +39,6 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="KafkaUtil.fs" />
     <Compile Include="Program.fs" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -52,5 +51,11 @@
     <Reference Include="RdKafka">
       <HintPath>..\packages\RdKafka.0.9.1\lib\net451\RdKafka.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StandardLibrary\StandardLibrary.fsproj">
+      <Project>{9647E763-8684-42AE-BC4E-DCA8DB7FBD94}</Project>
+      <Name>StandardLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

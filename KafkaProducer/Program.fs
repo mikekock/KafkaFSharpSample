@@ -1,7 +1,7 @@
 ﻿module MainKafkaProducer
 open System
 open System.Text
-open KafkaUtil
+open KafkaProducerUtil
 open RdKafka
 
 

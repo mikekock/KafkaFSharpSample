@@ -5,6 +5,8 @@ Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "KafkaProducer", "KafkaProdu
 EndProject
 Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "KafkaConsumer", "KafkaConsumer\KafkaConsumer.fsproj", "{906B0D02-B36F-4A6A-AE20-9608566BCAB8}"
 EndProject
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "StandardLibrary", "StandardLibrary\StandardLibrary.fsproj", "{9647E763-8684-42AE-BC4E-DCA8DB7FBD94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -19,5 +21,9 @@ Global
 		{906B0D02-B36F-4A6A-AE20-9608566BCAB8}.Debug|x86.Build.0 = Debug|x86
 		{906B0D02-B36F-4A6A-AE20-9608566BCAB8}.Release|x86.ActiveCfg = Release|x86
 		{906B0D02-B36F-4A6A-AE20-9608566BCAB8}.Release|x86.Build.0 = Release|x86
+		{9647E763-8684-42AE-BC4E-DCA8DB7FBD94}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9647E763-8684-42AE-BC4E-DCA8DB7FBD94}.Debug|x86.Build.0 = Debug|Any CPU
+		{9647E763-8684-42AE-BC4E-DCA8DB7FBD94}.Release|x86.ActiveCfg = Release|Any CPU
+		{9647E763-8684-42AE-BC4E-DCA8DB7FBD94}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
