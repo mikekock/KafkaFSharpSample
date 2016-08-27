@@ -1,6 +1,4 @@
-﻿// Learn more about F# at http://fsharp.net
-// See the 'F# Tutorial' project for more help.
-open System
+﻿open System
 open System.Text
 open RdKafka
 
@@ -24,23 +22,26 @@ let createKafkaTopic serverName bufferingMS topicName : Topic =
 let kafkaTopic topicName : Topic = 
     createKafkaTopic "www.smokinserver.com:9092" "10" topicName
 
+let makeKafkaMessage value iteration =
+    let sMsg = sprintf "Hello #%d from %d" value iteration
+    let sKey = sprintf "%d" value
+    let msg = stringToUTF8Bytes sMsg
+    let key = stringToUTF8Bytes sKey
+    printfn "%s" sMsg
+    (msg, key)
+
 [<EntryPoint>]
 let main argv = 
     let iterations = System.Int32.Parse argv.[0]
-    let topic = kafkaTopic("test")
+    use topic = kafkaTopic("test")
     let sendToTestTopic = sendToTopicWithKey topic
     let rnd = System.Random()
 
     for i in 1 .. iterations do
         let randomNumber = rnd.Next 9
-        let sMsg = sprintf "Hello #%d from %d" randomNumber i
-        let sKey = sprintf "%d" randomNumber
-
-        let msg = stringToUTF8Bytes sMsg
-        let key = stringToUTF8Bytes sKey
+        let msg = makeKafkaMessage randomNumber i
  
-        (msg, key) |> sendToTestTopic |> ignore
-        printfn "%s" sMsg
+        msg |> sendToTestTopic |> ignore
 
     
     //let c = new Config()

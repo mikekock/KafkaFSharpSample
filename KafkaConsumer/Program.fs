@@ -1,6 +1,4 @@
-﻿// Learn more about F# at http://fsharp.net
-// See the 'F# Tutorial' project for more help.
-open System
+﻿open System
 open System.Text
 open System.Collections.Generic
 open RdKafka
@@ -77,7 +75,7 @@ let main argv =
 
     let pipeline message = standardSomeOrNonePipeline decode handle interpret message
 
-    let consumer = kafkaConsumer consumerGroup "www.smokinserver.com:9092" "test" pipeline
+    use consumer = kafkaConsumer consumerGroup "www.smokinserver.com:9092" "test" pipeline
 
     printfn "Started consumer, press enter to stop consuming" 
     
