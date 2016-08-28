@@ -9,6 +9,8 @@ open ItemEvents
 
 type Input = 
     | Created of ItemCreated
+    | DescChanged of ItemDescriptionChanged
+    | Deleted of ItemDeleted
 
 type Output = 
     | StatusMessage of string
@@ -16,7 +18,9 @@ type Output =
 let handle input =
     match input with
         | Created c ->  Some(Output.StatusMessage (sprintf "Created %s %s %s %s" c.Id c.Description (c.Audit.TimestampUTC.ToLongDateString()) (c.Audit.TimestampUTC.ToLongTimeString())))
-            
+        | DescChanged c ->  Some(Output.StatusMessage (sprintf "Changed %s %s %s %s" c.Id c.Description (c.Audit.TimestampUTC.ToLongDateString()) (c.Audit.TimestampUTC.ToLongTimeString())))
+        | Deleted c ->  Some(Output.StatusMessage (sprintf "Deleted %s %s %s" c.Id (c.Audit.TimestampUTC.ToLongDateString()) (c.Audit.TimestampUTC.ToLongTimeString())))
+                        
 let interpret output =
     match output with
     | StatusMessage s -> 
@@ -28,6 +32,10 @@ let decode msg =
     match eventType.EventType with
     | "ItemCreated" ->
         Some(Input.Created(ItemCreated.fromJSON(msg)))
+    | "ItemDescriptionChanged" ->
+        Some(Input.DescChanged(ItemDescriptionChanged.fromJSON(msg)))
+    | "ItemDeleted" ->
+        Some(Input.Deleted(ItemDeleted.fromJSON(msg)))
     | _ ->
         None
 
