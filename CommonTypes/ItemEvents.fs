@@ -14,7 +14,6 @@ type ItemCreated with
     static member toJSON item =
         let envelope:EventEnvelope<ItemCreated> = {EventType = "ItemCreated"; Payload = item}
         JsonConvert.SerializeObject(envelope)
-        //envelope
 
     static member fromJSON json =
         let jo = JObject.Parse(json).["Payload"]
@@ -23,6 +22,6 @@ type ItemCreated with
             Id = jo.["Id"].ToString();
             Description = jo.["Description"].ToString();
             Department = System.Int32.Parse(jo.["Department"].ToString());
-            Audit = { TimestampUTC = DateTime.Parse(a.["TimestampUTC"].ToString()); Username = a.["Username"].ToString();}
+            Audit = AuditUsername.fromJSONObject a 
             }
         result

@@ -11,16 +11,16 @@ type Input =
     | Created of ItemCreated
 
 type Output = 
-    | Result of string
+    | StatusMessage of string
 
 let handle input =
     match input with
-        | Created c ->  Some(Output.Result (sprintf "Created %s %s %s %s" c.Id c.Description (c.Audit.TimestampUTC.ToLongDateString()) (c.Audit.TimestampUTC.ToLongTimeString())))
+        | Created c ->  Some(Output.StatusMessage (sprintf "Created %s %s %s %s" c.Id c.Description (c.Audit.TimestampUTC.ToLongDateString()) (c.Audit.TimestampUTC.ToLongTimeString())))
             
 let interpret output =
     match output with
-    | Result r -> 
-        printfn "%s" r
+    | StatusMessage s -> 
+        printfn "%s" s
         Some(true)
                         
 let decode msg =
