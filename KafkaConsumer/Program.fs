@@ -4,29 +4,18 @@ open System.Text
 open System.Collections.Generic
 open KafkaConsumerUtil
 open RdKafka
+open EventTypeJSON
+open ItemEvents
 
 type Input = 
-    | Val of string
-
-//type Battle with
-//    static member fromJSON json =
-//        let jo = JObject.Parse(json)
-//        let result:Battle = {
-//            Dtstamp = Guid(jo.["Dtstamp"].ToString()); 
-//            Id = Guid(jo.["Id"].ToString()); 
-//            Attacker = Guid(jo.["Attacker"].ToString()); 
-//            Defender = Guid(jo.["Defender"].ToString()); 
-//            Winner = Guid(jo.["Winner"].ToString()); 
-//            Loser = Guid(jo.["Loser"].ToString());
-//            }
-//        result
+    | Created of ItemCreated
 
 type Output = 
     | Result of string
 
 let handle input =
     match input with
-        | Val v ->  Some(Output.Result (sprintf "Output %s" v))
+        | Created c ->  Some(Output.Result (sprintf "Created %s %s %s %s" c.Id c.Description (c.Audit.TimestampUTC.ToLongDateString()) (c.Audit.TimestampUTC.ToLongTimeString())))
             
 let interpret output =
     match output with
@@ -35,18 +24,12 @@ let interpret output =
         Some(true)
                         
 let decode msg =
-    //let eventType = parseEventTypePayload msg
-    Some(Input.Val(msg))
-    //match eventType.EventType with
-    //| "Battle" ->
-    //    Some(Input.Bat(Battle.fromJSON(eventType.Payload)))
-    //| _ -> 
-    //    printfn "Encountered unknown EventType %s" eventType.EventType
-    //    None
-
-
-
-
+    let eventType = parseEventTypePayload msg
+    match eventType.EventType with
+    | "ItemCreated" ->
+        Some(Input.Created(ItemCreated.fromJSON(msg)))
+    | _ ->
+        None
 
 [<EntryPoint>]
 let main argv = 
@@ -59,6 +42,7 @@ let main argv =
     printfn "Started consumer, press enter to stop consuming" 
     
     let unused = Console.ReadLine()
+    consumer.Stop() |> Async.AwaitTask |> ignore
 
     printfn "%s" consumer.Name
     0 // return an integer exit code

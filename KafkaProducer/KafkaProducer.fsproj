@@ -57,5 +57,9 @@
       <Project>{9647E763-8684-42AE-BC4E-DCA8DB7FBD94}</Project>
       <Name>StandardLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CommonTypes\CommonTypes.fsproj">
+      <Project>{A5544F50-3F11-43E7-9A02-9BBE532BFD3C}</Project>
+      <Name>CommonTypes</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

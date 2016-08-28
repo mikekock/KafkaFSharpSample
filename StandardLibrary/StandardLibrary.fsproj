@@ -41,16 +41,12 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="RdKafka">
       <HintPath>..\packages\RdKafka.0.9.1\lib\net451\RdKafka.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="EventTypeJSON.fs" />
     <Compile Include="KafkaConsumerUtil.fs" />
     <Compile Include="KafkaProducerUtil.fs" />
   </ItemGroup>
