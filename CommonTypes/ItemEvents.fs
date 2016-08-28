@@ -16,12 +16,12 @@ type ItemCreated with
         JsonConvert.SerializeObject(envelope)
 
     static member fromJSON json =
-        let jo = JObject.Parse(json).["Payload"]
-        let a = jo.["Audit"]
+        let (eventType, payload) = parseEventTypePayloadObjects json
+        let audit = payload.["Audit"]
         let result:ItemCreated = {
-            Id = jo.["Id"].ToString();
-            Description = jo.["Description"].ToString();
-            Department = System.Int32.Parse(jo.["Department"].ToString());
-            Audit = AuditUsername.fromJSONObject a 
+            Id = payload.["Id"].ToString();
+            Description = payload.["Description"].ToString();
+            Department = System.Int32.Parse(payload.["Department"].ToString());
+            Audit = AuditUsername.fromJSONObject audit
             }
         result
