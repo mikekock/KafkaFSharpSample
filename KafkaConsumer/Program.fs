@@ -50,7 +50,7 @@ let main argv =
     printfn "Started consumer, press enter to stop consuming" 
     
     let unused = Console.ReadLine()
-    consumer.Stop() |> Async.AwaitTask |> ignore
+    consumer.Stop().RunSynchronously |> ignore
 
     printfn "%s" consumer.Name
     0 // return an integer exit code
