@@ -6,7 +6,10 @@ open RdKafka
 let kafkaConsumer group server topic pipeline = 
     let config = new Config()
     config.GroupId <- group
-
+    let topicConfig = new TopicConfig()
+    topicConfig.["auto.offset.reset"] <- "earliest";
+    config.DefaultTopicConfig <- topicConfig
+    
     let consumer:EventConsumer = new EventConsumer(config, server)
     let decodeKafkaMessageToString (msg:Message) = 
         Encoding.UTF8.GetString(msg.Payload, 0, msg.Payload.Length)

@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\RdKafka.Internal.librdkafka.0.9.1\build\RdKafka.Internal.librdkafka.props" Condition="Exists('..\packages\RdKafka.Internal.librdkafka.0.9.1\build\RdKafka.Internal.librdkafka.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -24,7 +25,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <ExternalConsole>true</ExternalConsole>
     <GenerateTailCalls>true</GenerateTailCalls>
@@ -45,12 +47,13 @@
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core" />
+    <Reference Include="RdKafka">
+      <HintPath>..\packages\RdKafka.0.9.2-ci-171\lib\net451\RdKafka.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="RdKafka">
-      <HintPath>..\packages\RdKafka.0.9.1\lib\net451\RdKafka.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
